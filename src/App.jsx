@@ -1,8 +1,17 @@
+import { Routes, Route, useNavigate } from "react-router-dom";
+import Layout from "./components/Layout";
+
+import HomePage from "./pages/HomePage";
+
 function App() {
+  const navigate = useNavigate();
+
   return (
-    <main>
-      <h1>Hello World!!</h1>
-    </main>
+    <Routes>
+      <Route path="/" element={<Layout />}>
+        <Route index element={<HomePage />} />
+      </Route>
+    </Routes>
   );
 }
 
