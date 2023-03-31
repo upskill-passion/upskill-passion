@@ -1,7 +1,9 @@
 import { useNavigate } from "react-router-dom";
+import useAuth from "../hooks/useAuth";
 
 const Unauthorized = () => {
   const navigate = useNavigate();
+  const { auth } = useAuth();
 
   const goBack = () => navigate(-1);
 
@@ -11,7 +13,11 @@ const Unauthorized = () => {
         Unauthorized
       </h1>
       <br />
-      <p>You do not have access to the requested page.</p>
+      <p>
+        Sorry,{" "}
+        <span className="font-semibold text-xl text-red-600">{auth?.user}</span>
+        &nbsp; You do not have access to the requested page.
+      </p>
       <div>
         <button className="underline font-semibold" onClick={goBack}>
           Go Back

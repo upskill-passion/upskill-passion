@@ -15,7 +15,15 @@ body,
 html {
   background-color: #fff;
   overflow-x: hidden;
+  min-height: 100vh;
 }
+
+/* .App {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  flex: 1 1 auto;
+} */
 
 ::-webkit-scrollbar {
   width: 0px;

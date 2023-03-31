@@ -1,4 +1,5 @@
 import { navLinks } from "../constants";
+import { Link } from "react-router-dom";
 
 const Nav = ({ toggle }) => {
   let margin = toggle ? "mb-4" : "mr-10";
@@ -6,11 +7,9 @@ const Nav = ({ toggle }) => {
   const content = navLinks.map((nav, index) => (
     <li
       key={nav.id}
-      className={`font-poppins font-normal cursor-pointer text-[16px] text-white ${
-        index === navLinks.length - 1 ? "mr-0" : margin
-      }`}
+      className={`font-poppins font-normal cursor-pointer text-[16px] text-white ${margin}`}
     >
-      <a href={`#${nav.id}`}>{nav.title}</a>
+      <Link to={`/${nav.id}`}>{nav.title}</Link>
     </li>
   ));
   return content;

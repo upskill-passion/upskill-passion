@@ -195,7 +195,7 @@ const Sidebar = () => {
             </p>
           </div>
 
-          <div className="flex w-full justify-between border-b-2 border-b-[#cecece] pb-6">
+          <div className="flex w-full justify-between pb-6">
             <button
               type="submit"
               onClick={filterJobs}

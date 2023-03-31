@@ -2,7 +2,7 @@ import { Link } from "react-router-dom";
 import { BsArrowUpRight } from "react-icons/bs";
 
 const JobCard = ({ job }) => {
-  console.log(job);
+  // console.log(job);
   return (
     <main className="jobcard">
       <p className="font-bold text-[25px]">
