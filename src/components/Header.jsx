@@ -8,12 +8,8 @@ const Header = () => {
 
   const content = (
     <header>
-      <nav className="w-full flex py-6 justify-between items-center">
-        <img
-          src={logo}
-          alt="upskill-passion-logo"
-          className="w-[124px] h-[32px]"
-        />
+      <nav className="w-full flex py-2 justify-between items-center">
+        <img src={logo} alt="upskill-passion-logo" className="w-[60px]" />
         <ul className="list-none sm:flex hidden justify-end items-center flex-1">
           <Nav />
         </ul>

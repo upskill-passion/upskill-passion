@@ -3,19 +3,13 @@ import JobCard from "./JobCard";
 
 const Jobs = ({ jobs }) => {
   return (
-    <Stack
-      direction="row"
-      flexWrap="wrap"
-      justifyContent="start"
-      gap={5}
-      px={5}
-    >
+    <div className="jobsgrid">
       {jobs?.map((item, idx) => (
         <Box key={idx}>
           <JobCard job={item} />
         </Box>
       ))}
-    </Stack>
+    </div>
   );
 };
 export default Jobs;

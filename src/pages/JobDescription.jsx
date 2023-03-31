@@ -1,18 +1,7 @@
-import { Link } from "react-router-dom";
-import { BsArrowUpRight } from "react-icons/bs";
-
-const JobCard = ({ job }) => {
-  console.log(job);
+const JobDescription = ({ job }) => {
   return (
     <main className="jobcard">
-      <p className="font-bold text-[25px]">
-        <Link to={job._id}>
-          {job?.title}&nbsp;{" "}
-          <span className="inline-block">
-            <BsArrowUpRight size={10} />
-          </span>
-        </Link>
-      </p>
+      <p className="font-bold text-[25px]">{job?.title}&nbsp; </p>
       <p className="font-normal text-sm">{job?.company}</p>
       <div className="px-3 py-2 rounded-md bg-blue-500 text-white font-bold my-3 inline-block">
         {job?.jobType}
@@ -42,4 +31,4 @@ const JobCard = ({ job }) => {
     </main>
   );
 };
-export default JobCard;
+export default JobDescription;
