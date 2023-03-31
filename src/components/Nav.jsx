@@ -20,7 +20,7 @@ const Nav = ({ toggle }) => {
   //   return response.data;
   // };
 
-  getPublishedJobs().then((data) => console.log(data));
+  // getPublishedJobs().then((data) => console.log(data));
 
   const content = navLinks.map((nav) => {
     if (isRecruiter && nav.id === "jobs") return null;

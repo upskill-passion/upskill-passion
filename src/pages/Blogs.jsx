@@ -1,4 +1,6 @@
+import BlogPost from "../components/BlogPost";
+
 const Blogs = () => {
-  return <div>Blogs</div>;
+  return <BlogPost />;
 };
 export default Blogs;
