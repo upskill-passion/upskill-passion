@@ -2,16 +2,64 @@ import React, { useState } from "react";
 import { Button, TextField } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 
+import jwt_decode from "jwt-decode";
+import useAuth from "../hooks/useAuth";
+
+import axios from "../api/axios";
+const LOGIN_URL = "/login";
+
 import "../css/Authentication.css";
 
 export default function Login() {
-  const [emailLogin, setEmailLogin] = useState("");
-  const [userNamePasswordLogin, setUserNamePasswordLogin] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [errMsg, setErrMsg] = useState("");
 
   const navigate = useNavigate();
+  const { auth, setAuth } = useAuth();
+
+  const handleSubmit = async (e) => {
+    e.preventDefault(); //prevent reloading
+    try {
+      const response = await axios.post(
+        LOGIN_URL,
+        JSON.stringify({ email, password }),
+        {
+          headers: { "Content-Type": "application/json" },
+        }
+      );
+      // console.log(JSON.stringify(response?.data));
+      //   console.log(JSON.stringify(response));
+
+      const accessToken = response?.data?.token;
+      // console.log(accessToken);
+      const decoded = jwt_decode(accessToken);
+      // console.log(decoded);
+
+      setAuth({ email, password, accessToken, userId: decoded.id });
+      setEmail("");
+      setPassword("");
+      // navigate(from, { replace: true });
+      navigate("/");
+    } catch (err) {
+      if (!err?.response) {
+        setErrMsg("No Server Response");
+      } else if (err.response?.status === 400) {
+        setErrMsg("Missing Username or Password");
+      } else if (err.response?.status === 401) {
+        setErrMsg("Unauthorized");
+      } else {
+        setErrMsg("Login Failed");
+      }
+    }
+  };
+
+  console.log(email, password);
+  console.log("Error: ", errMsg);
+  console.log("Auth:", auth);
 
   return (
-    <div>
+    <form onSubmit={handleSubmit}>
       <div className="login">
         <div className="loginBackground">
           <div style={{ marginLeft: "20px", marginTop: "20px" }}>
@@ -92,8 +140,8 @@ export default function Login() {
                 id="outline-basic"
                 size="small"
                 label="Enter your email"
-                value={emailLogin}
-                onChange={(e) => setEmailLogin(e.target.value)}
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
               />
             </div>
 
@@ -116,8 +164,8 @@ export default function Login() {
                 size="small"
                 label="Enter your password"
                 type="password"
-                value={userNamePasswordLogin}
-                onChange={(e) => setUserNamePasswordLogin(e.target.value)}
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
               />
             </div>
 
@@ -130,6 +178,7 @@ export default function Login() {
                   marginBottom: "20px",
                   marginLeft: "120px",
                 }}
+                type="submit"
               >
                 Login
               </Button>
@@ -223,7 +272,7 @@ export default function Login() {
                     id="outline-basic"
                     size="small"
                     label="Enter your email"
-                    value={emailLogin}
+                    value={email}
                     onChange={(e) => setEmailLogin(e.target.value)}
                   />
                 </div>
@@ -538,6 +587,6 @@ export default function Login() {
           </div>
         </Slide>
       )} */}
-    </div>
+    </form>
   );
 }

@@ -30,7 +30,7 @@ const Header = () => {
           <img src={logo} alt="upskill-passion-logo" className="w-[60px]" />
         </Link>
 
-        {auth?.user ? (
+        {auth?.email ? (
           <ul className="list-none sm:flex hidden justify-end items-center flex-1">
             <Nav />
             <li className="font-poppins font-normal cursor-pointer text-[px] text-white mt-2">
@@ -51,7 +51,7 @@ const Header = () => {
           </Link>
         )}
 
-        {auth?.user && (
+        {auth?.email && (
           <div className="sm:hidden flex flex-1 justify-end items-center">
             <img
               src={toggle ? close : menu}

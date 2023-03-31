@@ -4,11 +4,15 @@ const AuthContext = createContext({});
 
 export const AuthProvider = ({ children }) => {
   const [auth, setAuth] = useState({
-    user: "amanVar06",
-    pwd: "aman1234",
+    email: "",
+    password: "",
+    accessToken: "",
+    userId: "",
+    // user: "amanVar06",
+    // pwd: "aman1234",
     // role: "GeneralUser",
-    role: "Recruiter",
-    accessToken: "fhahfhawoeasofh",
+    // role: "Recruiter",
+    // accessToken: "fhahfhawoeasofh",
   });
 
   return (
