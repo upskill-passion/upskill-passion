@@ -7,7 +7,7 @@ const RequireAuth = ({ allowedRoles }) => {
   const { auth } = useAuth();
   const location = useLocation();
 
-  return auth?.roles?.find((role) => allowedRoles?.includes(role)) ? (
+  return allowedRoles?.includes(auth?.role) ? (
     <div className="App">
       <div className="w-full bg-[#3b5998] sm:px-16 px-6">
         <Header />

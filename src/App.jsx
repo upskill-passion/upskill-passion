@@ -24,19 +24,13 @@ function App() {
 
         {/* we want to protect these routes */}
         <Route
-          element={
-            <RequireAuth
-              allowedRoles={["General User", "Volunteer", "Recruiter"]}
-            />
-          }
+          element={<RequireAuth allowedRoles={["GeneralUser", "Recruiter"]} />}
         >
           <Route path="blogs" element={<Blogs />} />
           <Route path="qna" element={<Qna />} />
         </Route>
 
-        <Route
-          element={<RequireAuth allowedRoles={["Volunteer", "General User"]} />}
-        >
+        <Route element={<RequireAuth allowedRoles={["GeneralUser"]} />}>
           <Route path="jobs">
             <Route index element={<JobPage />} />
             <Route path=":jobId" element={<JobDescription />} />
