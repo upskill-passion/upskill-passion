@@ -17,7 +17,6 @@ function firebaseTimeToDate(time) {
 
 const JobDescription = () => {
   const [checked, setChecked] = useState(false);
-  // let checked = false;
   const { jobId } = useParams();
   // console.log(id);
 

@@ -117,3 +117,43 @@ export const DemoData = [
     ],
   },
 ];
+
+export const JobTypes = [
+  "Permanent",
+  "Temporary",
+  "Internship",
+  "Volunteer-Work",
+  "PartTime",
+];
+
+export const Experiences = [
+  {
+    min_experience: 0,
+    max_experience: 0,
+    id: "no-experience",
+    value: "No Experience",
+  },
+  {
+    min_experience: 1,
+    max_experience: 2,
+    id: "1year-2years",
+    value: "1 year - 2 years",
+  },
+  {
+    min_experience: 2,
+    max_experience: 5,
+    id: "2years-5years",
+    value: "2 years - 5 years",
+  },
+  { min_experience: 5, id: "moreThan5Years", value: "More than 5 years" },
+];
+
+export const Qualifications = [
+  "Bachelors",
+  "Masters",
+  "HighSchool",
+  "InterMediate",
+  "Diploma",
+  "Certification",
+  "PHD",
+];

@@ -1,50 +1,12 @@
 import { useState } from "react";
+
 import { control } from "../assets";
+import { Experiences, JobTypes, Qualifications } from "../constants";
 import useFilterJobQuery from "../hooks/useFilterJobQuery";
 
-const Sidebar = () => {
-  const JobTypes = [
-    "Permanent",
-    "Temporary",
-    "Internship",
-    "Volunteer-Work",
-    "PartTime",
-  ];
-
-  const Experiences = [
-    {
-      min_experience: 0,
-      max_experience: 0,
-      id: "no-experience",
-      value: "No Experience",
-    },
-    {
-      min_experience: 1,
-      max_experience: 2,
-      id: "1year-2years",
-      value: "1 year - 2 years",
-    },
-    {
-      min_experience: 2,
-      max_experience: 5,
-      id: "2years-5years",
-      value: "2 years - 5 years",
-    },
-    { min_experience: 5, id: "moreThan5Years", value: "More than 5 years" },
-  ];
-
-  const Qualifications = [
-    "Bachelors",
-    "Masters",
-    "HighSchool",
-    "InterMediate",
-    "Diploma",
-    "Certification",
-    "PHD",
-  ];
-
-  const [value, setValue] = useState(0);
-  const [open, setOpen] = useState(true);
+const JobSidebar = () => {
+  const [value, setValue] = useState(0); // for input slider
+  const [open, setOpen] = useState(true); // for main JobSidebar
 
   const [jobtype, setJobtype] = useState(
     new Array(JobTypes.length).fill(false)
@@ -121,16 +83,16 @@ const Sidebar = () => {
       if (item) requiredQualifications.push(Qualifications[idx]);
     });
 
-    console.log(requiredJobTypes);
-    console.log(requiredExperiences);
-    console.log(requiredQualifications);
+    // console.log(requiredJobTypes);
+    // console.log(requiredExperiences);
+    // console.log(requiredQualifications);
 
     // For Job Type
 
     if (requiredJobTypes.length) {
       jobTypeQueryString = `jobtype=${requiredJobTypes.join(",")}`;
     }
-    console.log("Job type Query String: ", jobTypeQueryString);
+    // console.log("Job type Query String: ", jobTypeQueryString);
     if (jobTypeQueryString) allQueryStrings.push(jobTypeQueryString);
 
     // For Experience Type
@@ -151,7 +113,7 @@ const Sidebar = () => {
     if (requiredExperiences.length) {
       experienceTypeQueryString = `min_experience=${minimumExperience}&max_experience=${maximumExperience}`;
     }
-    console.log("Exp type Query String: ", experienceTypeQueryString);
+    // console.log("Experience type Query String: ", experienceTypeQueryString);
     if (experienceTypeQueryString)
       allQueryStrings.push(experienceTypeQueryString);
 
@@ -162,10 +124,10 @@ const Sidebar = () => {
         ","
       )}`;
     }
-    console.log(
-      "Qualification type Query String: ",
-      qualificationTypeQueryString
-    );
+    // console.log(
+    //   "Qualification type Query String: ",
+    //   qualificationTypeQueryString
+    // );
     if (qualificationTypeQueryString) {
       allQueryStrings.push(qualificationTypeQueryString);
     }
@@ -214,7 +176,7 @@ const Sidebar = () => {
           >
             Clear all filters
           </button>
-          <div className="border-2 border-[#3b5998] rounded-lg py-3 px-2">
+          {/* <div className="border-2 border-[#3b5998] rounded-lg py-3 px-2">
             <label
               htmlFor="location-input"
               className="text-[18px] font-semibold block"
@@ -231,7 +193,7 @@ const Sidebar = () => {
               value={value}
             />
             <p>{value} Kms</p>
-          </div>
+          </div> */}
 
           <div className="border-2 border-[#3b5998] rounded-lg py-3 px-2">
             <p className="text-[18px] font-semibold block">JobType </p>
@@ -319,4 +281,4 @@ const Sidebar = () => {
   );
 };
 
-export default Sidebar;
+export default JobSidebar;

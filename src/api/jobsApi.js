@@ -21,7 +21,7 @@ export const jobsUrlEndpoint = "/jobs";
 // });
 
 export const getJobs = async (url) => {
-  // await delay();
+  await delay();
   const response = await jobsApi.get(url);
   return response.data;
 };

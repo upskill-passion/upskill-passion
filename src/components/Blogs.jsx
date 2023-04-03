@@ -2,10 +2,12 @@ import { Box } from "@mui/material";
 import BlogCard from "./BlogCard";
 
 import useBlogsData from "../hooks/useBlogsData";
+import useFilterBlogsQuery from "../hooks/useFilterBlogsQuery";
 
 const Blogs = () => {
-  const { blogs, isLoading, error } = useBlogsData();
-  // console.log("Blogs: ", blogs);
+  const { queryString } = useFilterBlogsQuery();
+  const { blogs, isLoading, error } = useBlogsData(queryString);
+  console.log("Blogs: ", blogs);
 
   let content;
   if (isLoading) {

@@ -1,10 +1,10 @@
-import Sidebar from "../components/Sidebar";
+import BlogSidebar from "../components/BlogSidebar";
 import Blogs from "../components/Blogs";
 
 const BlogsPage = () => {
   return (
     <div className="flex w-full">
-      <Sidebar />
+      <BlogSidebar />
 
       <div className="py-7 px-5 h-full flex-1">
         <div className="flex sm:flex-row sm:justify-between sm:items-center justify-center flex-col items-start gap-5 p-2">

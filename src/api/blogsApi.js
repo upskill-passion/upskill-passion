@@ -20,9 +20,15 @@ export const blogsUrlEndpoint = "/blogs";
 //   withCredentials: true,
 // });
 
-export const getBlogs = async () => {
+export const getBlogs = async (url) => {
+  await delay();
+  const response = await blogsApi.get(url);
+  return response.data;
+};
+
+export const getBlogTags = async (url) => {
   // await delay();
-  const response = await blogsApi.get(blogsUrlEndpoint);
+  const response = await blogsApi.get(url);
   return response.data;
 };
 
