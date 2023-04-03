@@ -22,7 +22,7 @@ const JobDescription = () => {
   // console.log(id);
 
   const { jobs, isLoading, error } = useJobData();
-  console.log("Jobs: ", jobs);
+  // console.log("Jobs: ", typeof jobs[0].tags);
 
   let content;
   if (isLoading) {
@@ -92,9 +92,9 @@ const JobDescription = () => {
               <p>
                 <strong>Estimated Salary:</strong> {job?.salary} INR
               </p>
-              <p>
+              {/* <p>
                 <strong>Tags:</strong> {job?.tags.join(",")}
-              </p>
+              </p> */}
             </div>
           </div>
 

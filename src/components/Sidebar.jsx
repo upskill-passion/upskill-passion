@@ -1,19 +1,194 @@
 import { useState } from "react";
 import { control } from "../assets";
+import useFilterJobQuery from "../hooks/useFilterJobQuery";
 
 const Sidebar = () => {
+  const JobTypes = [
+    "Permanent",
+    "Temporary",
+    "Internship",
+    "Volunteer-Work",
+    "PartTime",
+  ];
+
+  const Experiences = [
+    {
+      min_experience: 0,
+      max_experience: 0,
+      id: "no-experience",
+      value: "No Experience",
+    },
+    {
+      min_experience: 1,
+      max_experience: 2,
+      id: "1year-2years",
+      value: "1 year - 2 years",
+    },
+    {
+      min_experience: 2,
+      max_experience: 5,
+      id: "2years-5years",
+      value: "2 years - 5 years",
+    },
+    { min_experience: 5, id: "moreThan5Years", value: "More than 5 years" },
+  ];
+
+  const Qualifications = [
+    "Bachelors",
+    "Masters",
+    "HighSchool",
+    "InterMediate",
+    "Diploma",
+    "Certification",
+    "PHD",
+  ];
+
   const [value, setValue] = useState(0);
   const [open, setOpen] = useState(true);
-  const MAX = 1000;
+
+  const [jobtype, setJobtype] = useState(
+    new Array(JobTypes.length).fill(false)
+  );
+  const [experienceType, setExperienceType] = useState(
+    new Array(Experiences.length).fill(false)
+  );
+  const [qualificationType, setQualificationType] = useState(
+    new Array(Qualifications.length).fill(false)
+  );
+
+  // main query string in context
+  const { queryString, setQueryString } = useFilterJobQuery();
+
+  // For location range
+  const MAX = 600;
+
   const getBackgroundSize = () => {
     return {
       backgroundSize: `${(value * 100) / MAX}% 100%`,
     };
   };
 
+  // handle muliple jobtype checkboxes
+
+  const handleOnChangeJobType = (type) => {
+    const updatedJobTypes = jobtype.map((item, index) =>
+      index === type ? !item : item
+    );
+
+    setJobtype(updatedJobTypes);
+  };
+
+  // handle muliple experience type checkboxes
+
+  const handleOnChangeExperienceType = (type) => {
+    const updatedExperienceTypes = experienceType.map((item, index) =>
+      index === type ? !item : item
+    );
+
+    setExperienceType(updatedExperienceTypes);
+  };
+
+  // handle muliple qualification type checkboxes
+
+  const handleOnChangeQualificationType = (type) => {
+    const updatedQualficationTypes = qualificationType.map((item, index) =>
+      index === type ? !item : item
+    );
+
+    setQualificationType(updatedQualficationTypes);
+  };
+
   const filterJobs = (e) => {
     e.preventDefault();
+    let jobTypeQueryString = "";
+    let experienceTypeQueryString = "";
+    let qualificationTypeQueryString = "";
+
+    let requiredJobTypes = [];
+    let requiredExperiences = [];
+    let requiredQualifications = [];
+    let allQueryStrings = [];
+
+    jobtype.forEach((item, idx) => {
+      if (item) requiredJobTypes.push(JobTypes[idx]);
+    });
+
+    experienceType.forEach((item, idx) => {
+      if (item) requiredExperiences.push(Experiences[idx]);
+    });
+
+    qualificationType.forEach((item, idx) => {
+      if (item) requiredQualifications.push(Qualifications[idx]);
+    });
+
+    console.log(requiredJobTypes);
+    console.log(requiredExperiences);
+    console.log(requiredQualifications);
+
+    // For Job Type
+
+    if (requiredJobTypes.length) {
+      jobTypeQueryString = `jobtype=${requiredJobTypes.join(",")}`;
+    }
+    console.log("Job type Query String: ", jobTypeQueryString);
+    if (jobTypeQueryString) allQueryStrings.push(jobTypeQueryString);
+
+    // For Experience Type
+
+    let minimumExperience = 9999;
+    let maximumExperience = -9999;
+
+    for (let i = 0; i < requiredExperiences.length; i++) {
+      if (requiredExperiences[i].min_experience < minimumExperience) {
+        minimumExperience = requiredExperiences[i].min_experience;
+      }
+
+      if (requiredExperiences[i].max_experience > maximumExperience) {
+        maximumExperience = requiredExperiences[i].max_experience;
+      }
+    }
+
+    if (requiredExperiences.length) {
+      experienceTypeQueryString = `min_experience=${minimumExperience}&max_experience=${maximumExperience}`;
+    }
+    console.log("Exp type Query String: ", experienceTypeQueryString);
+    if (experienceTypeQueryString)
+      allQueryStrings.push(experienceTypeQueryString);
+
+    // For Qualification Type
+
+    if (requiredQualifications.length) {
+      qualificationTypeQueryString = `min_education=${requiredQualifications.join(
+        ","
+      )}`;
+    }
+    console.log(
+      "Qualification type Query String: ",
+      qualificationTypeQueryString
+    );
+    if (qualificationTypeQueryString) {
+      allQueryStrings.push(qualificationTypeQueryString);
+    }
+
+    if (allQueryStrings.length) {
+      setQueryString(`?${allQueryStrings.join("&")}`);
+    }
   };
+
+  const clearAllFilters = (e) => {
+    e.preventDefault();
+    setQueryString("");
+  };
+
+  const resetFilters = (e) => {
+    e.preventDefault();
+
+    setJobtype(new Array(JobTypes.length).fill(false));
+    setExperienceType(new Array(Experiences.length).fill(false));
+    setQualificationType(new Array(Qualifications.length).fill(false));
+  };
+
+  console.log("Main Query String: ", queryString);
 
   return (
     <div
@@ -22,6 +197,7 @@ const Sidebar = () => {
       } relative h-full overflow-y-scroll overflow-x-hidden bg-white px-7 pt-8 pb-36 duration-300 flex flex-col gap-5 border-r-2 border-r-[#cecece]`}
     >
       <img
+        loading="lazy"
         src={control}
         alt="control"
         className={`absolute cursor-pointer rounded-full -right-2 top-20 w-7 border-2 border-dark-purple ${
@@ -34,6 +210,7 @@ const Sidebar = () => {
           <button
             type="button"
             className="text-[18px] font-semibold outline-none border-blue-500 border-2 text-blue-500 rounded-sm py-3 px-4 hover:shadow-lg"
+            onClick={clearAllFilters}
           >
             Clear all filters
           </button>
@@ -58,141 +235,65 @@ const Sidebar = () => {
 
           <div className="border-2 border-[#3b5998] rounded-lg py-3 px-2">
             <p className="text-[18px] font-semibold block">JobType </p>
-            <p>
-              <input
-                type="checkbox"
-                id="internship"
-                defaultChecked={false}
-                name="jobtype"
-                value="Internship"
-              />
-              <label htmlFor="internship"> Internship</label>
-            </p>
-            <p>
-              <input
-                type="checkbox"
-                id="permanent"
-                defaultChecked={false}
-                name="jobtype"
-                value="Permanent"
-              />
-              <label htmlFor="permanent"> Permanent</label>
-            </p>
-            <p>
-              <input
-                type="checkbox"
-                id="temporary"
-                defaultChecked={false}
-                name="jobtype"
-                value="Temporary"
-              />
-              <label htmlFor="temporary"> Temporary</label>
-            </p>
+            {JobTypes.map((item, idx) => (
+              <div key={`jobtype-${idx}`}>
+                <p>
+                  <input
+                    type="checkbox"
+                    id={item}
+                    name="jobtype"
+                    value={item}
+                    checked={jobtype[idx]}
+                    onChange={() => handleOnChangeJobType(idx)}
+                  />
+                  <label className="capitalize" htmlFor={item}>
+                    {" "}
+                    {item}
+                  </label>
+                </p>
+              </div>
+            ))}
           </div>
 
           <div className="border-2 border-[#3b5998] rounded-lg py-3 px-2">
             <p className="text-[18px] font-semibold block">
               Experience Required{" "}
             </p>
-            <p>
-              <input
-                type="checkbox"
-                id="no-experience"
-                defaultChecked={false}
-                name="experienceReq"
-                value="No Experience"
-              />
-              <label htmlFor="no-experience"> No Experience</label>
-            </p>
-            <p>
-              <input
-                type="checkbox"
-                id="1year-2years"
-                defaultChecked={false}
-                name="experienceReq"
-                value="1 year - 2 years"
-              />
-              <label htmlFor="1year-2years"> 1 year - 2 years</label>
-            </p>
-            <p>
-              <input
-                type="checkbox"
-                id="2years-5years"
-                defaultChecked={false}
-                name="experienceReq"
-                value="2 years - 5 years"
-              />
-              <label htmlFor="2years-5years"> 2 years - 5 years</label>
-            </p>
-
-            <p>
-              <input
-                type="checkbox"
-                id="moreThan5Years"
-                defaultChecked={false}
-                name="experienceReq"
-                value="More than 5 years"
-              />
-              <label htmlFor="moreThan5Years"> More than 5 years</label>
-            </p>
+            {Experiences.map((item, idx) => (
+              <p key={`experiencetype-${idx}`}>
+                <input
+                  type="checkbox"
+                  id={item.id}
+                  checked={experienceType[idx]}
+                  name="experienceRequired"
+                  value={item.value}
+                  onChange={() => handleOnChangeExperienceType(idx)}
+                />
+                <label className="capitalize" htmlFor={item.id}>
+                  {" "}
+                  {item.value}
+                </label>
+              </p>
+            ))}
           </div>
 
           <div className="border-2 border-[#3b5998] rounded-lg py-3 px-2">
             <p className="text-[18px] font-semibold block">
               Minimum Qualification{" "}
             </p>
-            <p>
-              <input
-                type="checkbox"
-                id="bachelors"
-                defaultChecked={false}
-                name="minQualification"
-                value="Bachelors"
-              />
-              <label htmlFor="bachelors"> Bachelors</label>
-            </p>
-            <p>
-              <input
-                type="checkbox"
-                id="hsc"
-                defaultChecked={false}
-                name="minQualification"
-                value="HSC"
-              />
-              <label htmlFor="hsc"> HSC</label>
-            </p>
-            <p>
-              <input
-                type="checkbox"
-                id="intermediate"
-                defaultChecked={false}
-                name="minQualification"
-                value="Intermediate"
-              />
-              <label htmlFor="intermediate"> Intermediate</label>
-            </p>
-
-            <p>
-              <input
-                type="checkbox"
-                id="diploma"
-                defaultChecked={false}
-                name="minQualification"
-                value="Diploma"
-              />
-              <label htmlFor="diploma"> Diploma</label>
-            </p>
-
-            <p>
-              <input
-                type="checkbox"
-                id="none"
-                defaultChecked={false}
-                name="minQualification"
-                value="None"
-              />
-              <label htmlFor="none"> None</label>
-            </p>
+            {Qualifications.map((item, idx) => (
+              <p key={`qualificationType-${idx}`}>
+                <input
+                  type="checkbox"
+                  id={item}
+                  name="minQualification"
+                  value={item}
+                  checked={qualificationType[idx]}
+                  onChange={() => handleOnChangeQualificationType(idx)}
+                />
+                <label htmlFor={item}> {item}</label>
+              </p>
+            ))}
           </div>
 
           <div className="flex w-full justify-between pb-6">
@@ -207,6 +308,7 @@ const Sidebar = () => {
             <button
               type="reset"
               className="font-bold bg-[#3b5998] text-white rounded-lg border-none px-5 py-3"
+              onClick={resetFilters}
             >
               Reset
             </button>

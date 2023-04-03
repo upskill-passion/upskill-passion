@@ -20,9 +20,9 @@ export const jobsUrlEndpoint = "/jobs";
 //   withCredentials: true,
 // });
 
-export const getJobs = async () => {
+export const getJobs = async (url) => {
   // await delay();
-  const response = await jobsApi.get(jobsUrlEndpoint);
+  const response = await jobsApi.get(url);
   return response.data;
 };
 

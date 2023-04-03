@@ -10,6 +10,7 @@ import { getJobs, jobsUrlEndpoint } from "./api/jobsApi";
 import { getBlogs, blogsUrlEndpoint } from "./api/blogsApi";
 
 import { QueryContextProvider } from "./context/QueryContextProvider";
+import { FilterdJobDataProvider } from "./context/FilterProvider";
 
 preload(jobsUrlEndpoint, getJobs);
 preload(blogsUrlEndpoint, getBlogs);
@@ -19,9 +20,11 @@ ReactDOM.createRoot(document.getElementById("root")).render(
     <Router>
       <AuthProvider>
         <QueryContextProvider>
-          <Routes>
-            <Route path="/*" element={<App />} />
-          </Routes>
+          <FilterdJobDataProvider>
+            <Routes>
+              <Route path="/*" element={<App />} />
+            </Routes>
+          </FilterdJobDataProvider>
         </QueryContextProvider>
       </AuthProvider>
     </Router>
