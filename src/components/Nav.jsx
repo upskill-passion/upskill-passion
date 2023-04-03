@@ -1,14 +1,13 @@
 import { navLinks } from "../constants";
 import { Link } from "react-router-dom";
 import useAuth from "../hooks/useAuth";
-import axios from "../api/axios";
 
 const Nav = ({ toggle }) => {
   let margin = toggle ? "mb-4" : "mr-10";
   const { auth } = useAuth();
 
   const isRecruiter = auth?.role === "Recruiter";
-  console.log(isRecruiter);
+  // console.log(isRecruiter);
 
   // const token = auth?.accessToken;
 

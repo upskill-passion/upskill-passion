@@ -1,5 +1,5 @@
 import { createContext, useState, useRef, useEffect } from "react";
-import axios from "../api/axios";
+// import axios from "../api/axios";
 
 const JobContext = createContext({});
 
@@ -16,7 +16,7 @@ export const JobDataProvider = ({ children }) => {
         // console.log(response.data);
         return response.data;
       };
-      getJobsData().then((data) => setData(data?.data));
+      getJobsData().then((data) => setData(data));
     }
     return () => {
       // console.log("unmounted");

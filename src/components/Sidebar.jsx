@@ -19,12 +19,12 @@ const Sidebar = () => {
     <div
       className={`${
         open ? "w-72" : "w-5"
-      } h-screen bg-white relative p-5 pt-8 duration-300 flex flex-col gap-5 z-50 border-r-2 border-r-[#cecece]`}
+      } relative h-full overflow-y-scroll overflow-x-hidden bg-white px-7 pt-8 pb-36 duration-300 flex flex-col gap-5 border-r-2 border-r-[#cecece]`}
     >
       <img
         src={control}
         alt="control"
-        className={`absolute cursor-pointer rounded-full -right-4 top-9 w-7 border-2 border-dark-purple ${
+        className={`absolute cursor-pointer rounded-full -right-2 top-20 w-7 border-2 border-dark-purple ${
           !open && "rotate-180"
         }`}
         onClick={() => setOpen((prevState) => !prevState)}

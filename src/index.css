@@ -79,7 +79,8 @@ html {
   }
 }
 
-.jobsgrid {
+.jobsgrid,
+.blogsgrid {
   padding: 20px 50px;
   display: grid;
   grid-template-columns: 1fr;
@@ -100,7 +101,8 @@ html {
 }
 /* w-full sm:w-[350px] h-[300px] rounded-lg */
 
-.jobcard {
+.jobcard,
+.blogcard {
   -webkit-box-shadow: -8px 13px 47px -16px rgba(0, 0, 0, 0.43);
   -moz-box-shadow: -8px 13px 47px -16px rgba(0, 0, 0, 0.43);
   box-shadow: -8px 13px 47px -16px rgba(0, 0, 0, 0.43);

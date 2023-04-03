@@ -9,8 +9,10 @@ import Missing from "./pages/Missing";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
 import Qna from "./pages/Qna";
-import Blogs from "./pages/Blogs";
+import BlogsPage from "./pages/BlogsPage";
 import RequireAuth from "./components/RequireAuth";
+import CreateBlog from "./pages/CreateBlog";
+import BlogDescription from "./pages/BlogDescription";
 
 function App() {
   return (
@@ -26,7 +28,11 @@ function App() {
         <Route
           element={<RequireAuth allowedRoles={["GeneralUser", "Recruiter"]} />}
         >
-          <Route path="blogs" element={<Blogs />} />
+          <Route path="blogs">
+            <Route index element={<BlogsPage />} />
+            <Route path=":blogId" element={<BlogDescription />} />
+          </Route>
+          <Route path="createBlog" element={<CreateBlog />} />
           <Route path="qna" element={<Qna />} />
         </Route>
 

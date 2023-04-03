@@ -1,6 +1,6 @@
 import BlogPost from "../components/BlogPost";
 
-const Blogs = () => {
+const CreateBlog = () => {
   return <BlogPost />;
 };
-export default Blogs;
+export default CreateBlog;

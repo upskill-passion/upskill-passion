@@ -5,7 +5,7 @@ import { useNavigate } from "react-router-dom";
 import jwt_decode from "jwt-decode";
 import useAuth from "../hooks/useAuth";
 
-import axios from "../api/axios";
+// import axios from "../api/axios";
 const LOGIN_URL = "/login";
 
 import "../css/Authentication.css";
