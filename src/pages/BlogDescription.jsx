@@ -36,7 +36,7 @@ const BlogDescription = () => {
 
     try {
       const response = await axios.patch(
-        `/save/${blogId}/${auth.userId}`,
+        `/save/${blogId}`,
         JSON.stringify({
           action: "saved-blog",
         }),

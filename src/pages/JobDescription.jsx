@@ -7,6 +7,9 @@ import {
 } from "react-icons/bs";
 import { useState } from "react";
 
+import useAuth from "../hooks/useAuth";
+import axios from "../api/axios";
+
 function firebaseTimeToDate(time) {
   const fireBaseTime = new Date(
     time._seconds * 1000 + time._nanoseconds / 1000000
@@ -22,6 +25,35 @@ const JobDescription = () => {
 
   const { jobs, isLoading, error } = useJobData();
   // console.log("Jobs: ", typeof jobs[0].tags);
+
+  const { auth } = useAuth();
+
+  const handleOnSave = async (e) => {
+    e.preventDefault();
+
+    setChecked((prevState) => {
+      return !prevState;
+    });
+
+    try {
+      const response = await axios.patch(
+        `/save/${jobId}`,
+        JSON.stringify({
+          action: "saved-job",
+        }),
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${auth.accessToken}`,
+          },
+        }
+      );
+
+      console.log("Response Data:  ", response?.data);
+    } catch (err) {
+      console.log(err);
+    }
+  };
 
   let content;
   if (isLoading) {
@@ -101,11 +133,7 @@ const JobDescription = () => {
             <button
               type="button"
               className="border-blue-500 border-2 text-blue-500 w-[160px] h-[40px] px-2 rounded-sm flex flex-row items-center gap-4"
-              onClick={() =>
-                setChecked((prevState) => {
-                  return !prevState;
-                })
-              }
+              onClick={handleOnSave}
             >
               Save for Later
               {checked ? <BsBookmarkCheckFill /> : <BsBookmarkCheck />}

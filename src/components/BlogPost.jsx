@@ -38,42 +38,44 @@ export default function BlogPost() {
     setMinQualification(value);
   };
 
-  const populateTags = tags?.map((tag) => {
+  const selectedTags = tags?.map((tag) => {
     return tag?.label;
   });
 
-  console.log(populateTags);
+  // console.log(selectedTags);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    try {
-      const response = await axios.post(
-        "/blog",
-        JSON.stringify({
-          title,
-          content,
-          min_qualification: minQualificaton,
-          tags: populateTags,
-        }),
-        {
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${auth.accessToken}`,
-          },
-        }
-      );
+    if (title && content && minQualificaton && selectedTags.length) {
+      try {
+        const response = await axios.post(
+          "/blog",
+          JSON.stringify({
+            title,
+            content,
+            min_qualification: minQualificaton,
+            tags: selectedTags,
+          }),
+          {
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${auth.accessToken}`,
+            },
+          }
+        );
 
-      console.log("Response Data:  ", response?.data);
+        // console.log("Response Data:  ", response?.data);
 
-      toast.success("Success! New Post Redirected.", {
-        duration: 2500,
-        icon: "🎉",
-      });
+        toast.success("Success! New Post Redirected.", {
+          duration: 2500,
+          icon: "🎉",
+        });
 
-      navigate("/blogs");
-    } catch (err) {
-      console.log(err);
+        navigate("/blogs");
+      } catch (err) {
+        console.log(err);
+      }
     }
   };
 
@@ -82,7 +84,7 @@ export default function BlogPost() {
       <div>
         <Toaster toastOptions={{ position: "top-center" }} />
       </div>
-      <form className="w-full" onSubmit={handleSubmit}>
+      <div className="w-full">
         <div
           style={{
             display: "flex",
@@ -268,11 +270,12 @@ export default function BlogPost() {
             }}
             variant="contained"
             type="submit"
+            onClick={handleSubmit}
           >
             Post
           </Button>
         </div>
-      </form>
+      </div>
     </>
   );
 }
