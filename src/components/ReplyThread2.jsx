@@ -4,7 +4,7 @@ export default function ReplyThread2({ replies }) {
       <div>
         {replies.map((key, index) => {
           return (
-            <div>
+            <div key={key.id}>
               <div
                 style={{
                   backgroundColor: "white",
@@ -20,7 +20,7 @@ export default function ReplyThread2({ replies }) {
                     fontWeight: "bolder",
                   }}
                 >
-                  {key.name}
+                  {key.posted_by}
                 </p>
                 <p style={{ fontSize: "14px" }}>{key.reply}</p>
               </div>

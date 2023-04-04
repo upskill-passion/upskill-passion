@@ -5,23 +5,91 @@ import { BsFillBookmarkFill } from "react-icons/bs";
 import ReplyThread2 from "./ReplyThread2";
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
+import axios from "axios";
+import useAuth from "../hooks/useAuth";
+import toast, { Toaster } from "react-hot-toast";
+import useQuestion from "../hooks/useQuestionData";
 
 export default function SingleReply({
   answer,
   vote,
   laterSaved,
   upvotes,
+  downvotes,
   replyToReplies,
+  questionid,
+  answerid,
 }) {
-  const [upvoted, setUpvoted] = useState(vote);
+  const [upvoted, setUpvoted] = useState(upvotes);
+  const [upVotes, setUpvotes] = useState(upvotes);
+  const [downVotes, setDownVotes] = useState(downvotes);
   const [complete, showComplete] = useState(false);
   const [bookmarked, setBookMarked] = useState(laterSaved ? true : false);
   const [comments, setComments] = useState(false);
   const [addComment, setAddComment] = useState(false);
+  const [reply, setReply] = useState("");
+  const { auth } = useAuth();
+  const { setQuestions } = useQuestion();
+
+  async function handleSubmit() {
+    // try {
+    //   const response = await axios.patch(
+    //     `/save/${jobId}`,
+    //     JSON.stringify({
+    //       action: "saved-job",
+    //     }),
+    //     {
+    //       headers: {
+    //         "Content-Type": "application/json",
+    //         Authorization: `Bearer ${auth.accessToken}`,
+    //       },
+    //     }
+    //   );
+
+    //   console.log("Response Data:  ", response?.data);
+    // } catch (err) {
+    //   console.log(err);
+    // }
+
+    try {
+      const customConfig = {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${auth.accessToken}`,
+        },
+      };
+      const sendTo = JSON.stringify({
+        reply: reply,
+      });
+      const response = await axios.post(
+        `http://localhost:8080/reply/${questionid}/${answerid}`,
+        sendTo,
+        customConfig
+      );
+      async function getQuestions() {
+        const data = await axios({
+          method: "get",
+          url: "http://localhost:8080/queries",
+        });
+        setQuestions(data.data);
+      }
+      getQuestions();
+      toast.success("Success! Comment Added.", {
+        duration: 2500,
+        icon: "🎉",
+      });
+      setReply("");
+    } catch (err) {
+      console.log(err);
+    }
+  }
 
   return (
     <div>
       <div>
+        <div>
+          <Toaster toastOptions={{ position: "top-center" }} />
+        </div>
         <p
           style={{ marginTop: "10px", fontSize: "14px", marginBottom: "10px" }}
         >
@@ -71,7 +139,7 @@ export default function SingleReply({
                   marginLeft: "5px",
                 }}
               >
-                {upvotes}
+                {upVotes}
               </span>
             </div>
           }
@@ -97,7 +165,7 @@ export default function SingleReply({
                   marginLeft: "5px",
                 }}
               >
-                {upvotes}
+                {downVotes}
               </span>
             </div>
           }
@@ -174,6 +242,8 @@ export default function SingleReply({
             variant="outlined"
             style={{ width: "94%", borderRadius: "50px !important" }}
             size="small"
+            value={reply}
+            onChange={(e) => setReply(e.target.value)}
             inputProps={{
               style: {
                 borderRadius: "50px",
@@ -183,7 +253,11 @@ export default function SingleReply({
         </div>
       )}
       {addComment && (
-        <Button variant="contained" style={{ marginBottom: "10px" }}>
+        <Button
+          variant="contained"
+          style={{ marginBottom: "10px" }}
+          onClick={handleSubmit}
+        >
           Post
         </Button>
       )}

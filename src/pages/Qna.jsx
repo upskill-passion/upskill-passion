@@ -3,12 +3,13 @@ import { Slide } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
 import { TextField } from "@mui/material";
 import Button from "@mui/material/Button";
+import axios from "axios";
 
-import { useState } from "react";
-import { DemoData } from "../constants";
+import { useEffect, useState } from "react";
 import SingleQuestion from "../components/SingleQuestion";
 import "../css/ListArchitecture.css";
 import useQuery from "../hooks/useQuery";
+import useQuestion from "../hooks/useQuestionData";
 
 export default function Qna() {
   const [currentType, setCurrentType] = useState("@all");
@@ -16,6 +17,18 @@ export default function Qna() {
   const { query, setQuery } = useQuery();
   const [text, setText] = useState("");
   const [textChoose, setTextChoose] = useState(false);
+  const { questions, setQuestions } = useQuestion();
+
+  useEffect(() => {
+    async function getQuestions() {
+      const data = await axios({
+        method: "get",
+        url: "http://localhost:8080/queries",
+      });
+      setQuestions(data.data);
+    }
+    getQuestions();
+  }, []);
 
   return (
     <>
@@ -105,7 +118,7 @@ export default function Qna() {
             </div>
 
             <div style={{ marginTop: "5px", marginLeft: "25px" }}>
-              {DemoData.map((question, index) => {
+              {questions?.map((question, index) => {
                 return (
                   <SingleQuestion key={index} ind={index} question={question} />
                 );

@@ -1,23 +1,86 @@
 import { useState, useEffect } from "react";
 import SingleReply from "./SingleReply";
-import { EditorState } from "draft-js";
+// import { EditorState } from "draft-js";
 import { Editor } from "react-draft-wysiwyg";
 import { convertToHTML } from "draft-convert";
 import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
 import Button from "@mui/material/Button";
 import useQuery from "../hooks/useQuery";
+import { TextField } from "@mui/material";
+import useQuestion from "../hooks/useQuestionData";
+import useAuth from "../hooks/useAuth";
+import axios from "axios";
+import toast, { Toaster } from "react-hot-toast";
 
 export default function SingleQuestion({ ind, question }) {
   const [allReplies, setAllReplies] = useState(false);
-  const [editorState, setEditorState] = useState(EditorState.createEmpty());
+  // const [editorState, setEditorState] = useState(EditorState.createEmpty());
   const [answer, clickAnswer] = useState(false);
+  const [addAnswer, setAddAnswer] = useState("");
   const [convertedContent, setConvertedContent] = useState(null);
   const { query } = useQuery();
+  const { auth } = useAuth();
 
-  useEffect(() => {
-    let html = convertToHTML(editorState.getCurrentContent());
-    setConvertedContent(html);
-  }, [editorState]);
+  // useEffect(() => {
+  //   let html = convertToHTML(editorState.getCurrentContent());
+  //   setConvertedContent(html);
+  // }, [editorState]);
+
+  const { setQuestions } = useQuestion();
+
+  async function handleSubmit() {
+    // try {
+    //   const response = await axios.patch(
+    //     `/save/${jobId}`,
+    //     JSON.stringify({
+    //       action: "saved-job",
+    //     }),
+    //     {
+    //       headers: {
+    //         "Content-Type": "application/json",
+    //         Authorization: `Bearer ${auth.accessToken}`,
+    //       },
+    //     }
+    //   );
+
+    //   console.log("Response Data:  ", response?.data);
+    // } catch (err) {
+    //   console.log(err);
+    // }
+
+    try {
+      const customConfig = {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${auth.accessToken}`,
+        },
+      };
+      const sendTo = JSON.stringify({
+        answer: addAnswer,
+      });
+      const response = await axios.post(
+        `http://localhost:8080/answer/${question.id}`,
+        sendTo,
+        customConfig
+      );
+
+      async function getQuestions() {
+        const data = await axios({
+          method: "get",
+          url: "http://localhost:8080/queries",
+        });
+        setQuestions(data.data);
+      }
+      getQuestions();
+      toast.success("Success! Question Added.", {
+        duration: 2500,
+        icon: "🎉",
+      });
+      setAddAnswer("");
+    } catch (err) {
+      console.log(err);
+    }
+  }
 
   return (
     <>
@@ -26,6 +89,9 @@ export default function SingleQuestion({ ind, question }) {
           marginBottom: "20px",
         }}
       >
+        <div>
+          <Toaster toastOptions={{ position: "top-center" }} />
+        </div>
         <div
           style={{
             width: "100%",
@@ -73,7 +139,7 @@ export default function SingleQuestion({ ind, question }) {
           )}
         </div>
         <div style={{ display: "flex", flexDirection: "column" }}>
-          {question.replies.map((key, index) => {
+          {question.answers.map((key, index) => {
             return (
               <div
                 style={{
@@ -91,7 +157,7 @@ export default function SingleQuestion({ ind, question }) {
                       ? ""
                       : "none",
                 }}
-                key={index}
+                key={key.id}
               >
                 <p
                   style={{
@@ -100,7 +166,7 @@ export default function SingleQuestion({ ind, question }) {
                     color: "#3B5998",
                   }}
                 >
-                  {key.name}
+                  {key.posted_by}
                 </p>
                 <p
                   style={{
@@ -109,27 +175,41 @@ export default function SingleQuestion({ ind, question }) {
                     fontWeight: "bold",
                   }}
                 >
-                  {key.designation}
+                  {key.usertype}
                 </p>
                 <SingleReply
                   answer={key.answer}
-                  bookMark={key.bookMark}
-                  vote={key.vote}
-                  laterSaved={key.laterSaved}
-                  upvotes={key.upvotes}
-                  replyToReplies={key.replyToReplies}
+                  bookMark={false}
+                  laterSaved={false}
+                  upvotes={key.upvote_count}
+                  downvotes={key.downvote_count}
+                  replyToReplies={key.replies}
+                  questionid={question.id}
+                  answerid={key.id}
                 />
               </div>
             );
           })}
           {answer && (
             <div style={{ marginLeft: "10px" }}>
-              <Editor
-                editorState={editorState}
-                onEditorStateChange={setEditorState}
-                wrapperClassName="wrapper-class"
-                editorClassName="editor-class"
-                toolbarClassName="toolbar-class"
+              <TextField
+                style={{ width: "70%", marginTop: "10px" }}
+                id="outline-basic"
+                size="small"
+                multiline
+                label="Enter the question"
+                value={addAnswer}
+                onChange={(e) => {
+                  setAddAnswer(e.target.value);
+                }}
+                inputProps={{
+                  style: {
+                    backgroundColor: "white",
+                  },
+                }}
+                InputProps={{
+                  rows: 5,
+                }}
               />
             </div>
           )}
@@ -176,6 +256,7 @@ export default function SingleQuestion({ ind, question }) {
                     marginTop: "10px",
                     backgroundColor: "green",
                   }}
+                  onClick={handleSubmit}
                   variant="contained"
                 >
                   Save

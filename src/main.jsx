@@ -17,6 +17,7 @@ import { AuthProvider } from "./context/AuthProvider";
 import { QueryContextProvider } from "./context/QueryContextProvider";
 import { FilterdJobDataProvider } from "./context/FilterJobDataProvider";
 import { FilterdBlogDataProvider } from "./context/FilterBlogDataProvider";
+import { QuestionDataProvider } from "./context/QuestionDataProvider";
 
 preload(jobsCacheKey, getJobs);
 preload(blogsCacheKey, getBlogs);
@@ -29,9 +30,11 @@ ReactDOM.createRoot(document.getElementById("root")).render(
         <QueryContextProvider>
           <FilterdBlogDataProvider>
             <FilterdJobDataProvider>
-              <Routes>
-                <Route path="/*" element={<App />} />
-              </Routes>
+              <QuestionDataProvider>
+                <Routes>
+                  <Route path="/*" element={<App />} />
+                </Routes>
+              </QuestionDataProvider>
             </FilterdJobDataProvider>
           </FilterdBlogDataProvider>
         </QueryContextProvider>
