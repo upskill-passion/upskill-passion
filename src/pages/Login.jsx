@@ -19,6 +19,14 @@ export default function Login() {
   const [password, setPassword] = useState("");
   const [errMsg, setErrMsg] = useState("");
   const [loginBy, setLoginBy] = useState("generaluser");
+  const circleStyle = {
+    backgroundColor: "white",
+    borderRadius: "50%",
+    height: "10px",
+    width: "10px",
+    display: "inline-block",
+    marginRight: "10px",
+  };
 
   const navigate = useNavigate();
   const { auth, setAuth } = useAuth();
@@ -74,16 +82,50 @@ export default function Login() {
         <div className="loginBackground">
           <div style={{ marginLeft: "20px", marginTop: "20px" }}>
             <p>
-              Lorem Ipsum is simply dummy text of the printing and typesetting
-              industry. Lorem Ipsum has been the industry's standard dummy text
-              ever since the 1500s, when an unknown printer took a galley of
-              type and scrambled it to make a type specimen book. It has
-              survived not only five centuries, but also the leap into
-              electronic typesetting, remaining essentially unchanged. It was
-              popularised in the 1960s with the release of Letraset sheets
-              containing Lorem Ipsum passages, and more recently with desktop
-              publishing software like Aldus PageMaker including versions of
-              Lorem Ipsum.
+              <span style={{ color: "white", display: "block" }}>
+                User Functionality
+              </span>
+              <div>
+                <span style={{ display: "inline-block" }}>
+                  Register and login to the platform
+                </span>
+              </div>
+              <div>
+                <span style={{ display: "inline-block" }}>
+                  Access Common Functionalities and special functionalities
+                  based on their role
+                </span>
+              </div>
+              <span style={{ color: "white", display: "block" }}>
+                Common Functionalities
+              </span>
+              <div>
+                <span style={{ display: "inline-block" }}>
+                  Blogs: View and filter blogs using tags, minimum
+                  qualification, upvote count, and date posted. Post new blogs
+                  and view the profile of the user who posted the blog.
+                </span>
+              </div>
+              <div>
+                <span style={{ display: "inline-block" }}>
+                  Jobs: View and filter job opportunities based on minimum
+                  qualification, job type, and experience required to apply.
+                  Click on job title to see more information.
+                </span>
+              </div>
+              <span style={{ color: "white", display: "block" }}>
+                Recruiter Functionality
+              </span>
+              <div>
+                <span style={{ display: "inline-block" }}>
+                  View and update all jobs posted by them.
+                </span>
+              </div>
+              <div>
+                <span style={{ display: "inline-block" }}>
+                  Ability to view all applicants who applied for the job.
+                </span>
+              </div>
             </p>
             <div>
               <p
