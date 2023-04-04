@@ -45,7 +45,7 @@ const Register = () => {
         }
       );
 
-      console.log("Response Data:  ", response?.data);
+      // console.log("Response Data:  ", response?.data);
 
       const { token: accessToken } = response?.data;
 
@@ -89,8 +89,8 @@ const Register = () => {
     }
   };
 
-  console.log("Error Message: ", errMsg);
-  console.log("Auth: ", auth);
+  // console.log("Error Message: ", errMsg);
+  // console.log("Auth: ", auth);
 
   return (
     <>

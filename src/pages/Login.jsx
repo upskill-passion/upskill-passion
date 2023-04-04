@@ -34,7 +34,7 @@ export default function Login() {
         }
       );
 
-      console.log("Response Data:  ", response?.data);
+      // console.log("Response Data:  ", response?.data);
 
       const { token: accessToken } = response?.data;
 
@@ -65,8 +65,8 @@ export default function Login() {
     }
   };
 
-  console.log("Error Message: ", errMsg);
-  console.log("Auth: ", auth);
+  // console.log("Error Message: ", errMsg);
+  // console.log("Auth: ", auth);
 
   return (
     <form onSubmit={handleSubmit}>

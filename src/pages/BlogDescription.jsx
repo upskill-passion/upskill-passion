@@ -7,7 +7,9 @@ import {
 } from "react-icons/bs";
 import { BiUpvote, BiDownvote } from "react-icons/bi";
 
+import axios from "../api/axios";
 import useBlogsData from "../hooks/useBlogsData";
+import useAuth from "../hooks/useAuth";
 
 function firebaseTimeToDate(time) {
   const fireBaseTime = new Date(
@@ -19,12 +21,38 @@ function firebaseTimeToDate(time) {
 
 const BlogDescription = () => {
   const [checked, setChecked] = useState(false);
-  const [upVoted, setUpVoted] = useState(false);
-  const [downVoted, setDownVoted] = useState(false);
   const { blogId } = useParams();
 
   const { blogs, isLoading, error } = useBlogsData();
   // console.log("Blogs: ", blogs);
+  const { auth } = useAuth();
+
+  const handleOnSave = async (e) => {
+    e.preventDefault();
+
+    setChecked((prevState) => {
+      return !prevState;
+    });
+
+    try {
+      const response = await axios.patch(
+        `/save/${blogId}/${auth.userId}`,
+        JSON.stringify({
+          action: "saved-blog",
+        }),
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${auth.accessToken}`,
+          },
+        }
+      );
+
+      console.log("Response Data:  ", response?.data);
+    } catch (err) {
+      console.log(err);
+    }
+  };
 
   let content;
   if (isLoading) {
@@ -94,14 +122,10 @@ const BlogDescription = () => {
             <button
               type="button"
               className="border-blue-500 border-2 text-blue-500 w-[140px] h-[45px] px-2 rounded-sm flex flex-row items-center justify-center gap-4"
-              onClick={() =>
-                setChecked((prevState) => {
-                  return !prevState;
-                })
-              }
-              title="Save Post"
+              onClick={handleOnSave}
+              title="Save Blog"
             >
-              Save Post
+              Save Blog
               {checked ? <BsBookmarkCheckFill /> : <BsBookmarkCheck />}
             </button>
           </div>

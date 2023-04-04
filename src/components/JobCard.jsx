@@ -6,7 +6,7 @@ const JobCard = ({ job }) => {
   return (
     <main className="jobcard">
       <p className="font-bold text-[25px]">
-        <Link to={job.id}>
+        <Link to={`/jobs/${job?.id}`}>
           {job?.title}&nbsp;{" "}
           <span className="inline-block">
             <BsArrowUpRight size={10} />

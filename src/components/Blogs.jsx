@@ -7,7 +7,7 @@ import useFilterBlogsQuery from "../hooks/useFilterBlogsQuery";
 const Blogs = () => {
   const { queryString } = useFilterBlogsQuery();
   const { blogs, isLoading, error } = useBlogsData(queryString);
-  console.log("Blogs: ", blogs);
+  // console.log("Blogs: ", blogs);
 
   let content;
   if (isLoading) {

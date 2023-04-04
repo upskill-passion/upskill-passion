@@ -6,7 +6,7 @@ const BlogCard = ({ blog }) => {
   return (
     <main className="blogcard">
       <p className="font-bold text-[25px]">
-        <Link to={blog?.id}>
+        <Link to={`/blogs/${blog?.id}`}>
           {blog?.title}&nbsp;{" "}
           <span className="inline-block">
             <BsArrowUpRight size={10} />

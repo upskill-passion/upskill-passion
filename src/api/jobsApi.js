@@ -26,6 +26,13 @@ export const getJobs = async (url) => {
   return response.data;
 };
 
+export const getPostedJobs = async (url) => {
+  // /postedJobs/:userid
+  // await delay();
+  const response = await jobsApi.get(url);
+  return response.data;
+};
+
 export const addNewJob = async (jobObj) => {
   await delay();
   const response = await jobsApi.post(jobsUrlEndpoint, jobObj);

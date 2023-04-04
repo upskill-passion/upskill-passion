@@ -26,6 +26,13 @@ export const getBlogs = async (url) => {
   return response.data;
 };
 
+export const getPostedBlogs = async (url) => {
+  // /postedBlogs/:userid
+  // await delay();
+  const response = await blogsApi.get(url);
+  return response.data;
+};
+
 export const getBlogTags = async (url) => {
   // await delay();
   const response = await blogsApi.get(url);

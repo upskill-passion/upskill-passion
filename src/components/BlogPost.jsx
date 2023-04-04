@@ -1,32 +1,27 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { TextField } from "@mui/material";
-import Radio from "@mui/material/Radio";
-import RadioGroup from "@mui/material/RadioGroup";
-import FormControlLabel from "@mui/material/FormControlLabel";
-import FormControl from "@mui/material/FormControl";
-import { EditorState, convertFromRaw, convertToRaw } from "draft-js";
-import { Editor } from "react-draft-wysiwyg";
-import { convertToHTML } from "draft-convert";
-import { Parser } from "html-to-react";
-import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
+import axios from "../api/axios";
+import toast, { Toaster } from "react-hot-toast";
+
 import Chip from "@mui/material/Chip";
 import { styled } from "@mui/material/styles";
 import Paper from "@mui/material/Paper";
 import Button from "@mui/material/Button";
 
+import { Qualifications } from "../constants";
+import { useNavigate } from "react-router-dom";
+import useAuth from "../hooks/useAuth";
+
 export default function BlogPost() {
   const [title, setTitle] = useState("");
-  //   const [content, setContent] = useState("");
-  const [editorState, setEditorState] = useState(EditorState.createEmpty());
-  const [postedBy, setPostedBy] = useState("student");
+  const [content, setContent] = useState("");
   const [minQualificaton, setMinQualification] = useState("");
   const [numberTags, setNumberTags] = useState(0);
   const [tags, setTags] = useState([]);
   const [currentTag, setCurrentTag] = useState("");
 
-  useEffect(() => {
-    let html = convertToHTML(editorState.getCurrentContent());
-  }, [editorState]);
+  const navigate = useNavigate();
+  const { auth } = useAuth();
 
   const ListItem = styled("li")(({ theme }) => ({
     margin: theme.spacing(0.5),
@@ -38,20 +33,60 @@ export default function BlogPost() {
     setTags((tags) => tags.filter((tag) => tag.key !== tagToDelete.key));
   };
 
+  const onChangeQualification = (event) => {
+    const value = event.target.value;
+    setMinQualification(value);
+  };
+
+  const populateTags = tags?.map((tag) => {
+    return tag?.label;
+  });
+
+  console.log(populateTags);
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    try {
+      const response = await axios.post(
+        "/blog",
+        JSON.stringify({
+          title,
+          content,
+          min_qualification: minQualificaton,
+          tags: populateTags,
+        }),
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${auth.accessToken}`,
+          },
+        }
+      );
+
+      console.log("Response Data:  ", response?.data);
+
+      toast.success("Success! New Post Redirected.", {
+        duration: 2500,
+        icon: "🎉",
+      });
+
+      navigate("/blogs");
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
   return (
     <>
       <div>
+        <Toaster toastOptions={{ position: "top-center" }} />
+      </div>
+      <form className="w-full" onSubmit={handleSubmit}>
         <div
           style={{
             display: "flex",
             flexDirection: "column",
-            // backgroundImage: `url(${Image1})`,
-            // height: "100vh",
-            // width: "100%",
-            // backgroundSize: "cover",
-            // backgroundRepeat: "no-repeat",
-            // backgroundPosition: "center",
-            // backgroundAttachment: "fixed",
           }}
         >
           <div style={{ marginLeft: "20px" }}>
@@ -105,49 +140,29 @@ export default function BlogPost() {
               >
                 Content{" "}
               </p>
-              <Editor
-                editorState={editorState}
-                onEditorStateChange={setEditorState}
-                wrapperClassName="wrapper-class"
-                editorClassName="editor-class"
-                toolbarClassName="toolbar-class"
-                editorStyle={{ lineHeight: "10px" }}
+
+              <TextField
+                style={{ width: "70%" }}
+                id="outline-basic"
+                size="small"
+                multiline
+                label="Enter the content"
+                value={content}
+                onChange={(e) => {
+                  setContent(e.target.value);
+                }}
+                inputProps={{
+                  style: {
+                    backgroundColor: "white",
+                  },
+                }}
+                InputProps={{
+                  rows: 5,
+                  maxRows: 7,
+                }}
               />
             </div>
-            <div style={{ marginTop: "10px" }}>
-              <p
-                style={{
-                  fontFamily: "'Libre Baskerville', serif",
-                  marginBottom: "6px",
-                  fontWeight: "bolder",
-                  display: "inline-block",
-                  marginRight: "20px",
-                  marginTop: "8.5px",
-                }}
-              >
-                Role{" "}
-              </p>
-              <FormControl>
-                <RadioGroup
-                  row
-                  aria-labelledby="demo-row-radio-buttons-group-label"
-                  name="row-radio-buttons-group"
-                  defaultValue={postedBy}
-                  onChange={(e) => setPostedBy(e.target.value)}
-                >
-                  <FormControlLabel
-                    value="student"
-                    control={<Radio />}
-                    label="Student"
-                  />
-                  <FormControlLabel
-                    value="organization"
-                    control={<Radio />}
-                    label="Organization"
-                  />
-                </RadioGroup>
-              </FormControl>
-            </div>
+
             <div style={{ marginTop: "5px" }}>
               <p
                 style={{
@@ -157,23 +172,21 @@ export default function BlogPost() {
                   fontWeight: "bolder",
                 }}
               >
-                Minimum Qulification{" "}
+                Minimum Qualification{" "}
               </p>
-              <TextField
-                style={{ width: "300px" }}
-                id="outline-basic"
-                size="small"
-                label="Minimum Qualification"
-                value={minQualificaton}
-                onChange={(e) => {
-                  setMinQualification(e.target.value);
-                }}
-                inputProps={{
-                  style: {
-                    backgroundColor: "white",
-                  },
-                }}
-              />
+              <select
+                onChange={onChangeQualification}
+                className="w-[350px] outline-none border-gray-300 border-2 py-2 bg-white"
+              >
+                <option defaultValue disabled>
+                  Select Minimum Qualification for Blog
+                </option>
+                {Qualifications.map((q) => (
+                  <option key={q} value={q}>
+                    {q}
+                  </option>
+                ))}
+              </select>
             </div>
             <div style={{ marginTop: "12px" }}>
               <p
@@ -254,11 +267,12 @@ export default function BlogPost() {
               marginBottom: "25px",
             }}
             variant="contained"
+            type="submit"
           >
             Post
           </Button>
         </div>
-      </div>
+      </form>
     </>
   );
 }

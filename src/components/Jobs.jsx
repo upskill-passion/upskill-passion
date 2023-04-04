@@ -7,7 +7,7 @@ import useFilterJobQuery from "../hooks/useFilterJobQuery";
 const Jobs = () => {
   const { queryString } = useFilterJobQuery();
   const { jobs, isLoading, error } = useJobData(queryString);
-  console.log("Jobs: ", jobs);
+  // console.log("Jobs: ", jobs);
 
   let content;
   if (isLoading) {

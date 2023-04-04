@@ -7,8 +7,8 @@ const RequireAuth = ({ allowedRoles }) => {
   const { auth } = useAuth();
   const location = useLocation();
 
-  console.log(allowedRoles);
-  console.log(auth?.usertype);
+  // console.log(allowedRoles);
+  // console.log(auth?.usertype);
 
   return allowedRoles?.includes(auth?.usertype) ? (
     <div className="App">
