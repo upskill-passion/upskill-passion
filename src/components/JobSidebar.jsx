@@ -3,6 +3,7 @@ import { useState } from "react";
 import { control } from "../assets";
 import { Experiences, JobTypes, Qualifications } from "../constants";
 import useFilterJobQuery from "../hooks/useFilterJobQuery";
+import ReactSelect from "./ReactSelect";
 
 const JobSidebar = () => {
   const [value, setValue] = useState(0); // for input slider
@@ -195,7 +196,7 @@ const JobSidebar = () => {
             <p>{value} Kms</p>
           </div> */}
 
-          <div className="border-2 border-[#3b5998] rounded-lg py-3 px-2">
+          <div className="border-2 border-[#3b5998] rounded-lg py-3 px-2 mt-8">
             <p className="text-[18px] font-semibold block">JobType </p>
             {JobTypes.map((item, idx) => (
               <div key={`jobtype-${idx}`}>

@@ -61,6 +61,7 @@ export default function BlogPost() {
                   color: "#3B5998",
                   fontFamily: "'Alkatra', cursive",
                   fontWeight: "bolder",
+                  fontSize: "30px",
                 }}
               >
                 Blog Post

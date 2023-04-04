@@ -33,7 +33,16 @@ const Header = () => {
         {auth?.email ? (
           <ul className="list-none sm:flex hidden justify-end items-center flex-1">
             <Nav />
-            <li className="font-poppins font-normal cursor-pointer text-[px] text-white mt-2">
+            <li className="font-poppins font-normal cursor-pointer text-white mt-2 mr-3">
+              <button
+                type="button"
+                onClick={() => navigate("/me")}
+                title="My Profile"
+              >
+                <BiUser size={25} color="white" />
+              </button>
+            </li>
+            <li className="font-poppins font-normal cursor-pointer  text-white mt-2 ml-3">
               <button type="button" onClick={logout} title="Log out">
                 <AiOutlineLogout size={25} color="white" />
               </button>

@@ -133,6 +133,15 @@ const BlogSidebar = () => {
             <p>{value} Kms</p>
           </div> */}
 
+          <div className="border-2 border-[#3b5998] rounded-lg py-3 px-2 mt-8">
+            <p className="text-[18px] font-semibold block">Select Tags</p>
+
+            <ReactSelect
+              selectedTags={selectedTags}
+              setSelectedTags={setSelectedTags}
+            />
+          </div>
+
           <div className="border-2 border-[#3b5998] rounded-lg py-3 px-2">
             <p className="text-[18px] font-semibold block">
               Minimum Qualification{" "}
@@ -150,15 +159,6 @@ const BlogSidebar = () => {
                 <label htmlFor={item}> {item}</label>
               </p>
             ))}
-          </div>
-
-          <div className="border-2 border-[#3b5998] rounded-lg py-3 px-2">
-            <p className="text-[18px] font-semibold block">Select Tags</p>
-
-            <ReactSelect
-              selectedTags={selectedTags}
-              setSelectedTags={setSelectedTags}
-            />
           </div>
 
           <div className="flex w-full justify-between pb-6">

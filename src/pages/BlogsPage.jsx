@@ -1,5 +1,7 @@
 import BlogSidebar from "../components/BlogSidebar";
 import Blogs from "../components/Blogs";
+import Button from "@mui/material/Button";
+import { Link } from "react-router-dom";
 
 const BlogsPage = () => {
   return (
@@ -26,6 +28,9 @@ const BlogsPage = () => {
           </form>
         </div>
         <Blogs />
+        <Link to="new" className="fixed bottom-3 right-3">
+          <Button variant="contained">+ &nbsp; Create a Blog</Button>
+        </Link>
       </div>
     </div>
   );

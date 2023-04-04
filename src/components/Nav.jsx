@@ -6,7 +6,7 @@ const Nav = ({ toggle }) => {
   let margin = toggle ? "mb-4" : "mr-10";
   const { auth } = useAuth();
 
-  const isRecruiter = auth?.role === "Recruiter";
+  const isRecruiter = auth?.usertype === "recruiter";
   // console.log(isRecruiter);
 
   // const token = auth?.accessToken;
@@ -30,7 +30,7 @@ const Nav = ({ toggle }) => {
         className={`font-poppins font-normal cursor-pointer text-[16px] text-white ${margin}`}
       >
         {nav.id === "postedJobs" ? (
-          <Link to={`/${nav.id}`}>{nav.title}</Link>
+          <Link to={`/users/${auth.userId}/${nav.id}`}>{nav.title}</Link>
         ) : (
           <Link to={`/${nav.id}`}>{nav.title}</Link>
         )}

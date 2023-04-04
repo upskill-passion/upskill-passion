@@ -14,6 +14,11 @@ import RequireAuth from "./components/RequireAuth";
 import CreateBlog from "./pages/CreateBlog";
 import BlogDescription from "./pages/BlogDescription";
 
+import PostedBlogs from "./pages/PostedBlogs";
+import PostedJobs from "./pages/PostedJobs";
+import UserProfile from "./pages/UserProfile";
+import MyProfile from "./pages/MyProfile";
+
 function App() {
   return (
     <Routes>
@@ -26,36 +31,35 @@ function App() {
 
         {/* we want to protect these routes */}
         <Route
-          element={<RequireAuth allowedRoles={["GeneralUser", "Recruiter"]} />}
+          element={<RequireAuth allowedRoles={["generaluser", "recruiter"]} />}
         >
+          <Route path="me" element={<MyProfile />} />
           <Route path="blogs">
             <Route index element={<BlogsPage />} />
+            <Route path="new" element={<CreateBlog />} />
             <Route path=":blogId" element={<BlogDescription />} />
           </Route>
-          <Route path="createBlog" element={<CreateBlog />} />
+
           <Route path="qna" element={<Qna />} />
+          <Route path="users">
+            <Route path=":userId">
+              <Route index element={<UserProfile />} />
+              <Route path="postedJobs" element={<PostedJobs />} />
+              <Route path="postedBlogs" element={<PostedBlogs />} />
+            </Route>
+          </Route>
         </Route>
 
-        <Route element={<RequireAuth allowedRoles={["GeneralUser"]} />}>
+        <Route element={<RequireAuth allowedRoles={["generaluser"]} />}>
           <Route path="jobs">
             <Route index element={<JobPage />} />
             <Route path=":jobId" element={<JobDescription />} />
           </Route>
         </Route>
 
-        {/* <Route element={<RequireAuth allowedRoles={["Recruiter"]} />}>
-          <Route path="admin" element={<Admin />} />
-        </Route>
-
-        <Route
-          element={<RequireAuth allowedRoles={["Recruiter", "Volunteer"]} />}
-        >
-          <Route path="lounge" element={<Lounge />} />
-        </Route> */}
+        {/* catch all essentially 404 page*/}
+        <Route path="*" element={<Missing />} />
       </Route>
-
-      {/* catch all essentially 404 page*/}
-      <Route path="*" element={<Missing />} />
     </Routes>
   );
 }

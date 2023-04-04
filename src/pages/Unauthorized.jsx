@@ -15,7 +15,9 @@ const Unauthorized = () => {
       <br />
       <p>
         Sorry,{" "}
-        <span className="font-semibold text-xl text-red-600">{auth?.user}</span>
+        <span className="font-semibold text-xl text-red-600">
+          {auth?.username}
+        </span>
         &nbsp; You do not have access to the requested page.
       </p>
       <div>

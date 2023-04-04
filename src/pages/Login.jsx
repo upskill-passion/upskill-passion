@@ -1,11 +1,15 @@
 import React, { useState } from "react";
 import { Button, TextField } from "@mui/material";
 import { useNavigate } from "react-router-dom";
+import Radio from "@mui/material/Radio";
+import RadioGroup from "@mui/material/RadioGroup";
+import FormControlLabel from "@mui/material/FormControlLabel";
+import FormControl from "@mui/material/FormControl";
 
 import jwt_decode from "jwt-decode";
 import useAuth from "../hooks/useAuth";
 
-// import axios from "../api/axios";
+import axios from "../api/axios";
 const LOGIN_URL = "/login";
 
 import "../css/Authentication.css";
@@ -14,6 +18,7 @@ export default function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [errMsg, setErrMsg] = useState("");
+  const [loginBy, setLoginBy] = useState("generaluser");
 
   const navigate = useNavigate();
   const { auth, setAuth } = useAuth();
@@ -23,23 +28,29 @@ export default function Login() {
     try {
       const response = await axios.post(
         LOGIN_URL,
-        JSON.stringify({ email, password }),
+        JSON.stringify({ email, pswd: password, type: loginBy }),
         {
           headers: { "Content-Type": "application/json" },
         }
       );
-      // console.log(JSON.stringify(response?.data));
-      //   console.log(JSON.stringify(response));
 
-      const accessToken = response?.data?.token;
-      // console.log(accessToken);
+      console.log("Response Data:  ", response?.data);
+
+      const { token: accessToken } = response?.data;
+
       const decoded = jwt_decode(accessToken);
-      // console.log(decoded);
+      // console.log("Decoded Token: ", decoded);
 
-      setAuth({ email, password, accessToken, userId: decoded.id });
+      setAuth({
+        email,
+        password,
+        username: decoded.username,
+        accessToken,
+        userId: decoded.id,
+        usertype: decoded.usertype,
+      });
       setEmail("");
       setPassword("");
-      // navigate(from, { replace: true });
       navigate("/");
     } catch (err) {
       if (!err?.response) {
@@ -54,9 +65,8 @@ export default function Login() {
     }
   };
 
-  console.log(email, password);
-  console.log("Error: ", errMsg);
-  console.log("Auth:", auth);
+  console.log("Error Message: ", errMsg);
+  console.log("Auth: ", auth);
 
   return (
     <form onSubmit={handleSubmit}>
@@ -121,7 +131,15 @@ export default function Login() {
             }}
           >
             <div>
-              <h1 style={{ color: "#3B5998", marginLeft: "120px" }}>Log In</h1>
+              <h1
+                style={{
+                  color: "#3B5998",
+                  marginLeft: "120px",
+                  fontSize: "20px",
+                }}
+              >
+                Log In
+              </h1>
             </div>
 
             <div style={{ marginTop: "20px" }}>
@@ -167,6 +185,40 @@ export default function Login() {
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
               />
+            </div>
+
+            <div style={{ marginTop: "10px" }}>
+              <p
+                style={{
+                  fontFamily: "'Libre Baskerville', serif",
+                  marginBottom: "6px",
+                  fontWeight: "bolder",
+                  marginRight: "20px",
+                  marginTop: "8.5px",
+                }}
+              >
+                Role{" "}
+              </p>
+              <FormControl>
+                <RadioGroup
+                  row
+                  aria-labelledby="demo-row-radio-buttons-group-label"
+                  name="row-radio-buttons-group"
+                  value={loginBy}
+                  onChange={(e) => setLoginBy(e.target.value)}
+                >
+                  <FormControlLabel
+                    value="generaluser"
+                    control={<Radio />}
+                    label="General User"
+                  />
+                  <FormControlLabel
+                    value="recruiter"
+                    control={<Radio />}
+                    label="Recruiter"
+                  />
+                </RadioGroup>
+              </FormControl>
             </div>
 
             <div>

@@ -7,7 +7,10 @@ const RequireAuth = ({ allowedRoles }) => {
   const { auth } = useAuth();
   const location = useLocation();
 
-  return allowedRoles?.includes(auth?.role) ? (
+  console.log(allowedRoles);
+  console.log(auth?.usertype);
+
+  return allowedRoles?.includes(auth?.usertype) ? (
     <div className="App">
       <div className="w-full bg-[#3b5998] sm:px-16 px-6">
         <Header />
@@ -17,7 +20,7 @@ const RequireAuth = ({ allowedRoles }) => {
       </div>
       <Footer />
     </div>
-  ) : auth?.user ? (
+  ) : auth?.username ? (
     <Navigate to="/unauthorized" state={{ from: location }} replace />
   ) : (
     <Navigate to="/login" state={{ from: location }} replace />

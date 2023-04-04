@@ -188,7 +188,7 @@ export default function Qna() {
         </div>
         <div style={{ position: "fixed", bottom: "10px", right: "10px" }}>
           <Button onClick={() => setTextChoose(true)} variant="contained">
-            Add question ➕{" "}
+            Add question +{" "}
           </Button>
         </div>
         {textChoose && (
